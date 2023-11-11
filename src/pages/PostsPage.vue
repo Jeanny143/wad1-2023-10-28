@@ -4,7 +4,7 @@
     <textarea v-model="newPostsText" placeholder="Type your post here..."></textarea>
     <button @click="addPosts">Post</button>
 
-    <Post v-for="(posts, index) in userPosts" :key="index" :postsText="posts.text" :initialLikes="posts.likes" @like="incrementLikes(index)" />
+    <posts-page v-for="(PostsPage, index) in userPosts" :key="index" :PostsText="posts.text" :initialLikes="posts.likes" @like="incrementLikes(index)" />
   </div>
 </template>
 
@@ -13,7 +13,7 @@ import PostsPage      from "../pages/PostsPage.vue";
 
 export default {
   components: {
-    PostsPage,
+    'posts-page'     : PostsPage,
   },
   data() {
     return {
