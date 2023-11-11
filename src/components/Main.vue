@@ -50,7 +50,7 @@
             inHomePage() {
                 return this.page === 'home';
             },
-            /**
+             /**
              * Computed page is 'Posts' or not.
              * @returns {boolean}
              */
