@@ -1,62 +1,19 @@
-<!-- UserPost.vue -->
 <template>
-  <div>
-    <textarea v-model="newPostsText" placeholder="Type your post here..."></textarea>
-    <button @click="addPosts">Post</button>
-
-    <posts-page v-for="(PostsPage, index) in userPosts" :key="index" :PostsText="posts.text" :initialLikes="posts.likes" @like="incrementLikes(index)" />
-  </div>
+  <h1 class="mb-4">Home</h1>
+  <p class="mb-3">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ad architecto enim error illum libero nesciunt porro quod ratione tenetur vitae.</p>
+  <p class="mb-3">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eius facere harum libero, quaerat soluta velit?</p>
 </template>
 
-<script>
-import PostsPage      from "../pages/PostsPage.vue";
 
-export default {
-  components: {
-    'posts-page'     : PostsPage,
-  },
-  data() {
-    return {
-      newPostsText: "",
-      userPosts: [],
-    };
-  },
-  methods: {
-    addPost() {
-      if (this.newPostsText.trim() !== "") {
-        this.userPosts.push({
-          text: this.newPostsText,
-          likes: 0,
-        });
-        this.newPostsText = "";
-      }
-    },
-    incrementLikes(index) {
-      this.$set(this.userPosts, index, {
-        ...this.userPosts[index],
-        likes: this.userPosts[index].likes + 1,
-      });
-    },
-  },
-};
+<script>
+  import { defineComponent } from 'vue';
+
+  export default defineComponent({
+      name: "HomePage",
+  })
 </script>
 
-<style scoped>
-textarea {
-  width: 100%;
-  margin-bottom: 10px;
-}
 
-button {
-  background-color: #4caf50;
-  color: white;
-  border: none;
-  padding: 10px 20px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 16px;
-  cursor: pointer;
-  border-radius: 5px;
-}
+<style scoped>
+
 </style>
