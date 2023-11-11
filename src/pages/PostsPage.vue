@@ -1,53 +1,62 @@
+<!-- UserPost.vue -->
 <template>
-    <h1 class="mb-4">Posts</h1>
-    <v-textarea label="What's on your mind?"></v-textarea>
-    <div class="posts">
-    <p>{{ postText }}</p>
-    <button @click="incrementLikes">
-      <span>&#10084;</span> {{ likeCount }}
-    </button>
+  <div>
+    <textarea v-model="newPostText" placeholder="Type your post here..."></textarea>
+    <button @click="addPost">Post</button>
+
+    <Post v-for="(post, index) in userPosts" :key="index" :postText="post.text" :initialLikes="post.likes" @like="incrementLikes(index)" />
   </div>
 </template>
 
-
 <script>
-    export default {
-  props: {
-    postText: String,
-    initialLikes: {
-      type: Number,
-      default: 0,
-    },
+import Post from "./Post.vue";
+
+export default {
+  components: {
+    Post,
   },
   data() {
     return {
-      likeCount: this.initialLikes,
+      newPostText: "",
+      userPosts: [],
     };
   },
   methods: {
-    incrementLikes() {
-      this.likeCount += 1;
+    addPost() {
+      if (this.newPostText.trim() !== "") {
+        this.userPosts.push({
+          text: this.newPostText,
+          likes: 0,
+        });
+        this.newPostText = "";
+      }
+    },
+    incrementLikes(index) {
+      this.$set(this.userPosts, index, {
+        ...this.userPosts[index],
+        likes: this.userPosts[index].likes + 1,
+      });
     },
   },
 };
 </script>
 
-
 <style scoped>
-.post {
-  margin-bottom: 20px;
-  border: 1px solid #ac1212;
-  padding: 10px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+textarea {
+  width: 100%;
+  margin-bottom: 10px;
 }
 
 button {
-  background: transparent;
+  background-color: #4caf50;
+  color: white;
   border: none;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
   cursor: pointer;
-  display: flex;
-  align-items: center;
+  border-radius: 5px;
 }
 </style>
