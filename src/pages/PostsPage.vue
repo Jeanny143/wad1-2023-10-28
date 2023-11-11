@@ -1,34 +1,34 @@
 <!-- UserPost.vue -->
 <template>
   <div>
-    <textarea v-model="newPostText" placeholder="Type your post here..."></textarea>
-    <button @click="addPost">Post</button>
+    <textarea v-model="newPostsText" placeholder="Type your post here..."></textarea>
+    <button @click="addPosts">Post</button>
 
-    <Post v-for="(post, index) in userPosts" :key="index" :postText="post.text" :initialLikes="post.likes" @like="incrementLikes(index)" />
+    <Post v-for="(posts, index) in userPosts" :key="index" :postsText="posts.text" :initialLikes="posts.likes" @like="incrementLikes(index)" />
   </div>
 </template>
 
 <script>
-import Post from "./Post.vue";
+import PostsPage      from "../pages/PostsPage.vue";
 
 export default {
   components: {
-    Post,
+    PostsPage,
   },
   data() {
     return {
-      newPostText: "",
+      newPostsText: "",
       userPosts: [],
     };
   },
   methods: {
     addPost() {
-      if (this.newPostText.trim() !== "") {
+      if (this.newPostsText.trim() !== "") {
         this.userPosts.push({
-          text: this.newPostText,
+          text: this.newPostsText,
           likes: 0,
         });
-        this.newPostText = "";
+        this.newPostsText = "";
       }
     },
     incrementLikes(index) {
