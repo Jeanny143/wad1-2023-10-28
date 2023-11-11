@@ -51,7 +51,7 @@
                 return this.page === 'home';
             },
             /**
-             * Computed page is 'home' or not.
+             * Computed page is 'Posts' or not.
              * @returns {boolean}
              */
              inPostsPage() {
