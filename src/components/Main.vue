@@ -11,7 +11,7 @@
 <script>
     import { defineComponent } from 'vue';
     import HomePage      from "../pages/HomePage.vue";
-    import PostPage      from "../pages/PostsPage.vue";
+    import PostsPage      from "../pages/PostsPage.vue";
     import AboutPage     from "../pages/AboutPage.vue";
     import ContactUsPage from "../pages/ContactUsPage.vue";
 
