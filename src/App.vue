@@ -60,7 +60,7 @@
         /** DATA */
         data() {
             return {
-                title : 'Vuetify',
+                title : 'Jean',
                 isDark: true,
                 drawer: true,
                 page  : 'home',
