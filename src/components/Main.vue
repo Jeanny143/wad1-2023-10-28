@@ -1,6 +1,7 @@
 <template>
     <div class="pa-3">
         <home-page  v-if="inHomePage"/>
+        <Posts-page v-else-if="inPostsPage"/>
         <about-page v-else-if="inAboutPage"/>
         <contact-us-page v-else-if="inContactUsPage"/>
     </div>
@@ -35,6 +36,7 @@
         /** COMPONENTS */
         components: {
             'home-page'      : HomePage,
+            'Posts-page'     : PostsPage,
             'about-page'     : AboutPage,
             'contact-us-page': ContactUsPage
         },
@@ -48,7 +50,13 @@
             inHomePage() {
                 return this.page === 'home';
             },
-
+            /**
+             * Computed page is 'home' or not.
+             * @returns {boolean}
+             */
+             inPostsPage() {
+                return this.page === 'Posts';
+            },
             /**
              * Computed page is 'about' or not.
              * @returns {boolean}
