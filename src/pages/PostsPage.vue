@@ -1,23 +1,68 @@
 <template>
-  <h1 class="mb-4">Posts</h1>
-  <v-textarea label="What's on your mind?"></v-textarea>
+   <div>
+    <h1 class="mb-4">Post</h1>
+    <v-textarea v-model="inputText" label="What's on your mind?" placeholder=" "></v-textarea>
+    <v-btn @click="postText">Post</v-btn>
 
-  <div>
-    <button @click="addPost">Post</button>
-
-    <Posts v-for="(post, index) in userPosts" :key="index" :postText="post.text" :initialLikes="post.likes" @like="incrementLikes(index)" />
+    <div v-if="postedText.length > 0" class="mt-4">
+      <v-card v-for="(post, index) in postedText.slice().reverse()" :key="index" class="mb-2">
+        <v-row align="center">
+          <v-col>
+            <v-icon>mdi-account-circle</v-icon> Jean Ayen
+          </v-col>
+        </v-row>
+        <v-card-text>{{ post.message }}</v-card-text>
+        <v-row align="center">
+          <v-col></v-col>
+          <v-col class="text-right">
+            <v-icon @click="incrementHeartCount(post)" color="red">mdi-heart</v-icon> {{ post.heartCount }}
+          </v-col>
+        </v-row>
+        <v-divider class="mt-2"></v-divider>
+      </v-card>
+    </div>
   </div>
 </template>
-
+Mae
+Mae Ann
 <script>
-    import { defineComponent } from 'vue';
+import { defineComponent } from 'vue';
 
-    export default defineComponent({
-        name: "HomePage",
-    })
+export default defineComponent({
+  name: 'PostsPage',
+  data() {
+    return {
+      inputText: '',
+      postedText: [], 
+    };
+  },
+  methods: {
+    postText() {
+      this.postedText.push({ message: this.inputText, heartCount: 0 });
+      this.inputText = '';
+    },
+    incrementHeartCount(post) {
+
+      post.heartCount++;
+    },
+  },
+});
 </script>
+   
+   <style scoped>
+   /* Add your styles here if needed */
+   /* Add your component styles here */
+.post {
+  border: 1px solid #ccc;
+  padding: 10px;
+  margin: 10px;
+}
 
-
-<style scoped>
-
-</style>
+button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}
+   </style>
