@@ -4,10 +4,17 @@
     <meta charset="UTF-8"/>
     <link rel="icon" type="image/svg+xml" href="/vite.svg"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Posts App</title>
+    <link rel="stylesheet" href="styles.css">
     <title>Vuetify</title>
 </head>
 <body>
-    <div id="app"></div>
+    <div id="app">
+        <post-form @add-post="addPost"></post-form>
+        <post-list :posts="posts" @like-post="likePost"></post-list>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
+  <script src="app.js"></script>
     <script type="module" src="/src/main.js"></script>
 </body>
 </html>
