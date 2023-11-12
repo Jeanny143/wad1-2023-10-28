@@ -1,6 +1,6 @@
 <template>
    <div>
-    <h1 class="mb-4">Post</h1>
+    <h1 class="mb-4">Posts</h1>
     <v-textarea v-model="inputText" label="What's on your mind?" placeholder=" "></v-textarea>
     <v-btn @click="postText">Post</v-btn>
 
@@ -15,7 +15,7 @@
         <v-row align="center">
           <v-col></v-col>
           <v-col class="text-right">
-            <v-icon @click="incrementHeartCount(post)" color="red">mdi-heart</v-icon> {{ post.heartCount }}
+            <v-icon @click="incrementHeartCount(post)" style="color: red; background-color: #ff9999;">mdi-heart</v-icon> {{ post.heartCount }}
           </v-col>
         </v-row>
         <v-divider class="mt-2"></v-divider>
@@ -23,8 +23,7 @@
     </div>
   </div>
 </template>
-Mae
-Mae Ann
+
 <script>
 import { defineComponent } from 'vue';
 
@@ -53,16 +52,18 @@ export default defineComponent({
    /* Add your styles here if needed */
    /* Add your component styles here */
 .post {
-  border: 1px solid #ccc;
+  border: 1px solid #7c1a92;
   padding: 10px;
   margin: 10px;
 }
 
 button {
-  background: none;
+  background: green;
   border: none;
   cursor: pointer;
   display: flex;
   align-items: center;
+  float: right;
 }
+
    </style>
