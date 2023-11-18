@@ -10,6 +10,7 @@
           <v-col>
             <v-icon>mdi-account-circle</v-icon> Jean Ayen
           </v-col>
+
         </v-row>
         <v-card-text>{{ post.message }}</v-card-text>
         <v-row align="center">
@@ -36,17 +37,20 @@ export default defineComponent({
     };
   },
   methods: {
-    postText() {
-      this.postedText.push({ message: this.inputText, heartCount: 0 });
+    postsText() {
+      const currentDate = new Date();
+      const formattedDate = `${currentDate.toLocaleDateString()} ${currentDate.toLocaleTimeString()}`;
+
+      this.postedText.push({ message: this.inputText, heartCount: 0, createdAt: formattedDate });
       this.inputText = '';
     },
     incrementHeartCount(post) {
-
-      post.heartCount++;
+      posts.heartCount++;
     },
   },
 });
 </script>
+
    
    <style scoped>
    /* Add your styles here if needed */
