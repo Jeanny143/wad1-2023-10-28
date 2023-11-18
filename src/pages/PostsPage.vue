@@ -7,6 +7,7 @@
     <div v-if="postedText.length > 0" class="mt-4">
       <v-card v-for="(post, index) in postedText.slice().reverse()" :key="index" class="mb-2">
         <v-row align="center">
+          
           <v-col>
             <v-icon>mdi-account-circle</v-icon> Jean Ayen
           </v-col>
@@ -38,6 +39,7 @@ export default defineComponent({
   },
   methods: {
     postText() {
+      
       this.postedText.push({ message: this.inputText, heartCount: 0 });
       this.inputText = '';
     },
