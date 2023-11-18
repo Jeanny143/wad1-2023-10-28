@@ -12,6 +12,10 @@
             <v-icon>mdi-account-circle</v-icon> Jean Ayen
           </v-col>
           
+          <v-col class="text-right">
+            {{ formatDateTime(post.timestamp) }}
+          </v-col>
+
         </v-row>
         <v-card-text>{{ post.message }}</v-card-text>
         <v-row align="center">
@@ -39,6 +43,7 @@ export default defineComponent({
   },
   methods: {
     postText() {
+      const timestamp = new Date();
       
       this.postedText.push({ message: this.inputText, heartCount: 0 });
       this.inputText = '';
@@ -47,8 +52,14 @@ export default defineComponent({
 
       post.heartCount++;
     },
+    formatDateTime(timestamp) {
+      const options = { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' };
+      return new Date(timestamp).toLocaleString('en-US', options);
+  
+    },
   },
 });
+
 </script>
    
    <style scoped>
