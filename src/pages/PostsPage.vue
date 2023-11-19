@@ -154,6 +154,7 @@ export default defineComponent({
 </script>
 
 <style scoped>
+
 .reply-form,
 .edit-form {
   margin-top: 10px;
