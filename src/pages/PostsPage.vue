@@ -5,69 +5,55 @@
     <v-btn @click="postText">Post</v-btn>
 
     <div v-if="postedText.length > 0" class="mt-4">
-      <v-card v-for="(post, index) in postedText.slice().reverse()" :key="index" class="mb-2">
-        <v-row align="center">
-          <v-col>
-            <v-icon>mdi-account-circle</v-icon> Jean Ayen
-          </v-col>
-          <v-col class="text-right">
-            {{ formatDateTime(post.timestamp) }}
-          </v-col>
-        </v-row>
-        <v-card-text>{{ post.message }}</v-card-text>
-        <v-row align="center">
-          <v-col>
-            <v-icon @click="toggleReplyForm(post)" style="color: blue; cursor: pointer;">mdi-message-reply-text</v-icon>
-            <v-btn @click="toggleReplyForm(post)">
-              <v-icon>mdi-comment</v-icon>
-              {{ getCommentCount(post) }}
-            </v-btn>
-            <v-icon @click="toggleEditForm(post)" style="color: green; cursor: pointer;">mdi-pencil</v-icon>
-          </v-col>
-          <v-col class="text-right">
-            <v-icon @click="incrementHeartCount(post)" style="color: red; background-color: #ff9999;">mdi-heart</v-icon> {{ post.heartCount }}
-            <v-icon @click="deletePost(index)" style="color: red; cursor: pointer;">mdi-delete</v-icon>
-          </v-col>
-        </v-row>
+      <v-card v-for="(post, index) in postedText.slice().reverse()" :key="index" class="mb-2 post-card">
+        <div class="post-header">
+          <v-icon>mdi-account-circle</v-icon> Jean Ayen
+          <div class="post-timestamp">{{ formatDateTime(post.timestamp) }}</div>
+        </div>
+        <v-card-text class="post-message">{{ post.message }}</v-card-text>
+        <div class="post-actions">
+       
+          <v-btn @click="toggleReplyForm(post)" class="action-btn">
+            <v-icon>mdi-comment</v-icon>
+            {{ getCommentCount(post) }}
+          </v-btn>
+          <v-icon @click="toggleEditForm(post)" class="action-icon">mdi-pencil</v-icon>
+          <v-icon @click="incrementHeartCount(post)" class="action-icon heart-icon">mdi-heart</v-icon>
+          <span class="heart-count">{{ post.heartCount }}</span>
+          <v-icon @click="deletePost(index)" class="action-icon delete-icon">mdi-delete</v-icon>
+        </div>
 
         <!-- Edit form for post -->
         <div v-show="post.showEditForm" class="edit-form">
           <v-textarea v-model="post.editedText" label="Edit Post" placeholder=" "></v-textarea>
-          <v-btn @click="updatePost(post)">Update</v-btn>
+          <v-btn @click="updatePost(post)" class="update-btn">Update</v-btn>
         </div>
 
         <!-- Reply form -->
         <div v-show="post.showReplyForm" class="reply-form">
           <v-textarea v-model="post.replyText" label="Reply" placeholder=" "></v-textarea>
-          <v-btn @click="postReply(post)">Reply</v-btn>
+          <v-btn @click="postReply(post)" class="reply-btn">Reply</v-btn>
         </div>
 
         <!-- Display replies -->
         <v-divider class="mt-2"></v-divider>
-        <div v-for="(comment, commentIndex) in post.comments" :key="commentIndex" class="mb-2">
-          <v-row align="center">
-            <v-col>
-              <v-icon>mdi-account-circle</v-icon> {{ comment.author }}
-            </v-col>
-            <v-col class="text-right">
-              {{ formatDateTime(comment.timestamp) }}
-            </v-col>
-          </v-row>
+        <div v-for="(comment, commentIndex) in post.comments" :key="commentIndex" class="mb-2 comment">
+          <div class="comment-header">
+            <v-icon>mdi-account-circle</v-icon> {{ comment.author }}
+            <div class="comment-timestamp">{{ formatDateTime(comment.timestamp) }}</div>
+          </div>
           <v-card-text>{{ comment.message }}</v-card-text>
-          <v-row align="center">
-            <v-col></v-col>
-            <v-col class="text-right">
-              <v-icon @click="incrementHeartCount(comment)" style="color: red; background-color: #ff9999;">mdi-heart</v-icon>
-              {{ comment.heartCount }}
-              <v-icon @click="toggleEditForm(comment)" style="color: green; cursor: pointer;">mdi-pencil</v-icon>
-              <v-icon @click="deleteComment(post, commentIndex)" style="color: red; cursor: pointer;">mdi-delete</v-icon>
-            </v-col>
-          </v-row>
+          <div class="comment-actions">
+            <v-icon @click="incrementHeartCount(comment)" class="action-icon heart-icon">mdi-heart</v-icon>
+            {{ comment.heartCount }}
+            <v-icon @click="toggleEditForm(comment)" class="action-icon">mdi-pencil</v-icon>
+            <v-icon @click="deleteComment(post, commentIndex)" class="action-icon delete-icon">mdi-delete</v-icon>
+          </div>
 
           <!-- Edit form for comment -->
           <div v-show="comment.showEditForm" class="edit-form">
             <v-textarea v-model="comment.editedText" label="Edit Comment" placeholder=" "></v-textarea>
-            <v-btn @click="updateComment(post, commentIndex)">Update</v-btn>
+            <v-btn @click="updateComment(post, commentIndex)" class="update-btn">Update</v-btn>
           </div>
         </div>
       </v-card>
@@ -154,11 +140,82 @@ export default defineComponent({
 </script>
 
 <style scoped>
+.post-card {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 16px;
+}
 
-.reply-form,
-.edit-form {
+.post-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.post-timestamp,
+.comment-timestamp {
+  color: #888;
+  font-size: 0.8rem;
+}
+
+.post-message {
+  margin-bottom: 12px;
+}
+
+.post-actions,
+.comment-actions {
+  display: flex;
+  align-items: center;
+  color: #555;
+}
+
+.action-icon {
+  margin-right: 8px;
+  cursor: pointer;
+}
+
+.action-btn {
+  text-transform: none;
+}
+
+.heart-icon {
+  color: red;
+}
+
+.heart-count {
+  margin-right: 12px;
+}
+
+.delete-icon {
+  color: red;
+}
+
+.edit-form,
+.reply-form {
   margin-top: 10px;
   padding: 10px;
-  border: 1px solid #e0e0e0;
+  border: 1px solid #080404;
+  background-color: #130a0a;
+}
+
+.reply-btn,
+.update-btn {
+  margin-top: 8px;
+}
+
+.comment {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 12px;
+}
+
+.comment-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
 }
 </style>
