@@ -170,7 +170,7 @@ export default defineComponent({
 
 .post-timestamp,
 .comment-timestamp {
-  color: #888;
+  color: #555; /* Set the color to a dark shade */
   font-size: 0.8rem;
 }
 
