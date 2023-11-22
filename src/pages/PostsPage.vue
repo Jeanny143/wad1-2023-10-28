@@ -1,61 +1,58 @@
 <template>
   <div>
-    <h1 class="mb-4">Posts</h1>
-    <v-textarea v-model="inputText" label="What's on your mind?" placeholder=" "></v-textarea>
-    <v-btn @click="postText">Post</v-btn>
+    <h1 class="mb-4 text-primary">My Awesome Posts</h1>
+    <v-textarea v-model="inputText" label="Share your thoughts" placeholder="What's on your mind?"></v-textarea>
+    <v-btn @click="postText" class="btn-primary">Post</v-btn>
 
     <div v-if="postedText.length > 0" class="mt-4">
-      <v-card v-for="(post, index) in postedText.slice().reverse()" :key="index" class="mb-2 post-card">
+      <v-card v-for="(post, index) in postedText.slice().reverse()" :key="index" class="mb-4 post-card">
         <div class="post-header">
           <v-icon>mdi-account-circle</v-icon> Jean Ayen
           <div class="post-timestamp">{{ formatDateTime(post.timestamp) }}</div>
         </div>
         <v-card-text class="post-message">{{ post.message }}</v-card-text>
         <div class="post-actions">
-       
-          <v-btn @click="toggleReplyForm(post)" class="action-btn">
-            <v-icon>mdi-comment</v-icon>
-            {{ getCommentCount(post) }}
-          </v-btn>
-          <v-icon @click="toggleEditForm(post)" class="action-icon">mdi-pencil</v-icon>
-          <v-icon @click="incrementHeartCount(post)" class="action-icon heart-icon">mdi-heart</v-icon>
-          <span class="heart-count">{{ post.heartCount }}</span>
-          <v-icon @click="deletePost(index)" class="action-icon delete-icon">mdi-delete</v-icon>
-        </div>
-
+      <v-btn @click="toggleReplyForm(post)" class="btn-icon btn-secondary">
+        <v-icon>mdi-comment</v-icon>
+        {{ getCommentCount(post) }}
+      </v-btn>
+      <v-icon @click="toggleEditForm(post)" class="action-icon edit-icon">mdi-pencil</v-icon>
+      <v-icon @click="incrementHeartCount(post)" class="action-icon heart-icon" :style="{ backgroundColor: '#e74c3c' }">mdi-heart</v-icon>
+      <span class="heart-count">{{ post.heartCount }}</span>
+      <v-icon @click="deletePost(index)" class="action-icon delete-icon">mdi-delete</v-icon>
+    </div>
         <!-- Edit form for post -->
         <div v-show="post.showEditForm" class="edit-form">
-          <v-textarea v-model="post.editedText" label="Edit Post" placeholder=" "></v-textarea>
-          <v-btn @click="updatePost(post)" class="update-btn">Update</v-btn>
+          <v-textarea v-model="post.editedText" label="Edit Post" placeholder="Edit your post"></v-textarea>
+          <v-btn @click="updatePost(post)" class="btn-primary">Update</v-btn>
         </div>
 
         <!-- Reply form -->
         <div v-show="post.showReplyForm" class="reply-form">
-          <v-textarea v-model="post.replyText" label="Reply" placeholder=" "></v-textarea>
-          <v-btn @click="postReply(post)" class="reply-btn">Reply</v-btn>
+          <v-textarea v-model="post.replyText" label="Reply" placeholder="Reply to this post"></v-textarea>
+          <v-btn @click="postReply(post)" class="btn-primary">Reply</v-btn>
         </div>
 
         <!-- Display replies -->
         <v-divider class="mt-2"></v-divider>
-        <div v-for="(comment, commentIndex) in post.comments" :key="commentIndex" class="mb-2 comment">
-          <div class="comment-header">
-            <v-icon>mdi-account-circle</v-icon> {{ comment.author }}
-            <div class="comment-timestamp">{{ formatDateTime(comment.timestamp) }}</div>
-          </div>
-          <v-card-text>{{ comment.message }}</v-card-text>
-          <div class="comment-actions">
-            <v-icon @click="incrementHeartCount(comment)" class="action-icon heart-icon">mdi-heart</v-icon>
-            {{ comment.heartCount }}
-            <v-icon @click="toggleEditForm(comment)" class="action-icon">mdi-pencil</v-icon>
-            <v-icon @click="deleteComment(post, commentIndex)" class="action-icon delete-icon">mdi-delete</v-icon>
-          </div>
-
-          <!-- Edit form for comment -->
-          <div v-show="comment.showEditForm" class="edit-form">
-            <v-textarea v-model="comment.editedText" label="Edit Comment" placeholder=" "></v-textarea>
-            <v-btn @click="updateComment(post, commentIndex)" class="update-btn">Update</v-btn>
-          </div>
-        </div>
+        <div v-for="(comment, commentIndex) in post.comments" :key="commentIndex" class="mb-3 comment">
+    <div class="comment-header">
+      <v-icon>mdi-account-circle</v-icon> {{ comment.author }}
+      <div class="comment-timestamp">{{ formatDateTime(comment.timestamp) }}</div>
+    </div>
+    <v-card-text>{{ comment.message }}</v-card-text>
+    <div class="comment-actions">
+      <v-icon @click="incrementHeartCount(comment)" class="action-icon heart-icon" :style="{ backgroundColor: '#e74c3c' }">mdi-heart</v-icon>
+      <span class="heart-count">{{ comment.heartCount }}</span>
+      <v-icon @click="toggleEditForm(comment)" class="action-icon edit-icon" :style="{ color: '#2ecc71' }">mdi-pencil</v-icon>
+      <v-icon @click="deleteComment(post, commentIndex)" class="action-icon delete-icon">mdi-delete</v-icon>
+    </div>
+    <!-- Edit form for comment -->
+    <div v-show="comment.showEditForm" class="edit-form">
+      <v-textarea v-model="comment.editedText" label="Edit Comment" placeholder="Edit your comment"></v-textarea>
+      <v-btn @click="updateComment(post, commentIndex)" class="btn-primary">Update</v-btn>
+    </div>
+  </div>
       </v-card>
     </div>
   </div>
@@ -140,11 +137,28 @@ export default defineComponent({
 </script>
 
 <style scoped>
+/* New or modified styles */
+.text-primary {
+  color: #3498db;
+}
+
+.btn-primary {
+  color: #fff;
+  background-color: #3498db;
+}
+
+.btn-secondary {
+  color: #fff;
+  background-color: #2ecc71;
+}
+
 .post-card {
-  border: 1px solid #ddd;
+  border: 1px solid #806363;
   border-radius: 8px;
   padding: 16px;
   margin-bottom: 16px;
+  background-color: #746868;
+  box-shadow: 0 0 10px rgba(114, 83, 83, 0.1);
 }
 
 .post-header {
@@ -179,13 +193,24 @@ export default defineComponent({
 .action-btn {
   text-transform: none;
 }
-
-.heart-icon {
-  color: red;
+.edit-icon {
+  color: #2ecc71; /* Green color for the edit icon */
+  cursor: pointer;
+}
+.heart-count {
+  background-color: #e74c3c; /* Match the heart icon color */
+  color: #fff;
+  padding: 2px 6px;
+  border-radius: 4px;
+  margin-right: 8px;
 }
 
 .heart-count {
-  margin-right: 12px;
+  background-color: #e74c3c; /* Match the heart icon color */
+  color: #fff;
+  padding: 2px 6px;
+  border-radius: 4px;
+  margin-right: 8px;
 }
 
 .delete-icon {
@@ -196,8 +221,8 @@ export default defineComponent({
 .reply-form {
   margin-top: 10px;
   padding: 10px;
-  border: 1px solid #080404;
-  background-color: #130a0a;
+  border: 1px solid #291e1e;
+  background-color: #634a4a;
 }
 
 .reply-btn,
@@ -206,10 +231,12 @@ export default defineComponent({
 }
 
 .comment {
-  border: 1px solid #ddd;
+  border: 1px solid #241a1a;
   border-radius: 8px;
   padding: 16px;
   margin-bottom: 12px;
+  background-color: #9e8585;
+  box-shadow: 0 0 5px rgba(65, 53, 53, 0.1);
 }
 
 .comment-header {
