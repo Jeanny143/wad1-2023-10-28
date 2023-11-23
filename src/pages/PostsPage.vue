@@ -1,3 +1,4 @@
+Copy code
 <template>
   <div>
     <h1 class="mb-4 text-primary">My Awesome Posts</h1>
@@ -14,7 +15,9 @@
     <div v-if="postedText.length > 0" class="mt-4">
       <v-card v-for="(post, index) in postedText.slice().reverse()" :key="index" class="mb-4 post-card">
         <div class="post-header">
-          <v-icon>mdi-account-circle</v-icon> Jean Ayen
+          <div>
+            <v-icon>mdi-account-circle</v-icon> Jean Ayen
+          </div>
           <div class="post-timestamp">{{ formatDateTime(post.timestamp) }}</div>
         </div>
         <v-card-text class="post-message">{{ post.message }}</v-card-text>
@@ -44,7 +47,9 @@
         <v-divider class="mt-2"></v-divider>
         <div v-for="(comment, commentIndex) in post.comments" :key="commentIndex" class="mb-3 comment">
           <div class="comment-header">
-            <v-icon>mdi-account-circle</v-icon> {{ comment.author }}
+            <div>
+              <v-icon>mdi-account-circle</v-icon> {{ comment.author }}
+            </div>
             <div class="comment-timestamp">{{ formatDateTime(comment.timestamp) }}</div>
           </div>
           <v-card-text>{{ comment.message }}</v-card-text>
