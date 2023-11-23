@@ -1,4 +1,3 @@
-Copy code
 <template>
   <div>
     <h1 class="mb-4 text-primary">My Awesome Posts</h1>
