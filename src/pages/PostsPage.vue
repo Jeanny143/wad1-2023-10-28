@@ -1,9 +1,5 @@
-
-
-User
 <template>
-
-    <div>
+  <div>
     <h1 class="mb-4 text-primary">My Awesome Posts</h1>
 
     <div class="row">
@@ -23,20 +19,20 @@ User
         </div>
         <v-card-text class="post-message">{{ post.message }}</v-card-text>
         <div class="post-actions">
-      <v-btn @click="toggleReplyForm(post)" class="btn-icon btn-secondary">
-        <v-icon>mdi-comment</v-icon>
-        {{ getCommentCount(post) }}
-      </v-btn>
-      <v-icon @click="toggleEditForm(post)" class="action-icon edit-icon">mdi-pencil</v-icon>
-      <v-icon @click="incrementHeartCount(post)" class="action-icon heart-icon" :style="{ backgroundColor: '#e74c3c' }">mdi-heart</v-icon>
-      <span class="heart-count">{{ post.heartCount }}</span>
-      <v-icon @click="confirmDelete(post)" class="action-icon delete-icon">mdi-delete</v-icon>
-    </div>
+          <v-btn @click="toggleReplyForm(post)" class="btn-icon btn-secondary">
+            <v-icon>mdi-comment</v-icon>
+            {{ getCommentCount(post) }}
+          </v-btn>
+          <v-icon @click="toggleEditForm(post)" class="action-icon edit-icon">mdi-pencil</v-icon>
+          <v-icon @click="incrementHeartCount(post)" class="action-icon heart-icon" :style="{ backgroundColor: '#e74c3c' }">mdi-heart</v-icon>
+          <span class="heart-count">{{ post.heartCount }}</span>
+          <v-icon @click="confirmDelete(post)" class="action-icon delete-icon">mdi-delete</v-icon>
+        </div>
         <!-- Edit form for post -->
         <div v-show="post.showEditForm" class="edit-form">
-    <v-textarea v-model="post.editedText" label="Edit Post" placeholder="Edit your post"></v-textarea>
-    <v-btn @click="confirmEdit(post)" class="btn-primary">Update</v-btn>
-  </div>
+          <v-textarea v-model="post.editedText" label="Edit Post" placeholder="Edit your post"></v-textarea>
+          <v-btn @click="confirmEdit(post)" class="btn-primary">Update</v-btn>
+        </div>
 
         <!-- Reply form -->
         <div v-show="post.showReplyForm" class="reply-form">
@@ -47,26 +43,23 @@ User
         <!-- Display replies -->
         <v-divider class="mt-2"></v-divider>
         <div v-for="(comment, commentIndex) in post.comments" :key="commentIndex" class="mb-3 comment">
-    <div class="comment-header">
-      <v-icon>mdi-account-circle</v-icon> {{ comment.author }}
-      <div class="comment-timestamp">{{ formatDateTime(comment.timestamp) }}</div>
-    </div>
-    <v-card-text>{{ comment.message }}</v-card-text>
-    <div class="comment-actions">
-      <v-icon @click="incrementHeartCount(comment)" class="action-icon heart-icon" :style="{ backgroundColor: '#e74c3c' }">mdi-heart</v-icon>
-      <span class="heart-count">{{ comment.heartCount }}</span>
-      <v-icon @click="toggleEditForm(comment)" class="action-icon edit-icon" :style="{ color: '#2ecc71' }">mdi-pencil</v-icon>
-      <div v-show="post.showEditForm" class="edit-form">
-    <v-textarea v-model="post.editedText" label="Edit Post" placeholder="Edit your post"></v-textarea>
-    <v-btn @click="confirmEdit(post)" class="btn-primary">Update</v-btn>
-  </div>
-    </div>
-    <!-- Edit form for comment -->
-    <div v-show="comment.showEditForm" class="edit-form">
-      <v-textarea v-model="comment.editedText" label="Edit Comment" placeholder="Edit your comment"></v-textarea>
-      <v-btn @click="updateComment(post, commentIndex)" class="btn-primary">Update</v-btn>
-    </div>
-  </div>
+          <div class="comment-header">
+            <v-icon>mdi-account-circle</v-icon> {{ comment.author }}
+            <div class="comment-timestamp">{{ formatDateTime(comment.timestamp) }}</div>
+          </div>
+          <v-card-text>{{ comment.message }}</v-card-text>
+          <div class="comment-actions">
+            <v-icon @click="incrementHeartCount(comment)" class="action-icon heart-icon" :style="{ backgroundColor: '#e74c3c' }">mdi-heart</v-icon>
+            <span class="heart-count">{{ comment.heartCount }}</span>
+            <v-icon @click="toggleEditForm(comment)" class="action-icon edit-icon" :style="{ color: '#2ecc71' }">mdi-pencil</v-icon>
+            <v-icon @click="confirmDelete({ post, commentIndex }, true)" class="action-icon delete-icon">mdi-delete</v-icon>
+          </div>
+          <!-- Edit form for comment -->
+          <div v-show="comment.showEditForm" class="edit-form">
+            <v-textarea v-model="comment.editedText" label="Edit Comment" placeholder="Edit your comment"></v-textarea>
+            <v-btn @click="updateComment(post, commentIndex)" class="btn-primary">Update</v-btn>
+          </div>
+        </div>
       </v-card>
     </div>
   </div>
@@ -143,18 +136,32 @@ export default defineComponent({
         this.updatePost(post);
       }
     },
-
-    confirmDelete(post) {
-      const confirmed = window.confirm('Are you sure you want to delete this post?');
+    confirmDelete(item, isComment = false) {
+      const confirmed = window.confirm('Are you sure you want to delete this ' + (isComment ? 'comment' : 'post') + '?');
       if (confirmed) {
-        this.deletePost(post);
+        if (isComment) {
+          // Delete comment
+          const postIndex = this.postedText.indexOf(item.post);
+          if (postIndex !== -1) {
+            this.postedText[postIndex].comments.splice(item.commentIndex, 1);
+          }
+        } else {
+          // Delete post
+          const index = this.postedText.indexOf(item);
+          if (index !== -1) {
+            this.postedText.splice(index, 1);
+          }
+        }
       }
     },
-    deletePost(index) {
-      this.postedText.splice(index, 1);
+    deletePost(post) {
+      const index = this.postedText.indexOf(post);
+      if (index !== -1) {
+        this.postedText.splice(index, 1);
+      }
     },
     deleteComment(post, commentIndex) {
-      post.comments.splice(commentIndex, 1);
+      this.confirmDelete({ post, commentIndex }, true);
     },
     getCommentCount(post) {
       return post.comments.length;
@@ -224,14 +231,6 @@ export default defineComponent({
   color: #2ecc71; /* Green color for the edit icon */
   cursor: pointer;
 }
-.heart-count {
-  background-color: #e74c3c; /* Match the heart icon color */
-  color: #fff;
-  padding: 2px 6px;
-  border-radius: 4px;
-  margin-right: 8px;
-}
-
 .heart-count {
   background-color: #e74c3c; /* Match the heart icon color */
   color: #fff;
