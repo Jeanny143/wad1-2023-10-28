@@ -1,8 +1,16 @@
 <template>
-  <div>
+  
+    <div>
     <h1 class="mb-4 text-primary">My Awesome Posts</h1>
-    <v-textarea v-model="inputText" label="Share your thoughts" placeholder="What's on your mind?"></v-textarea>
-    <v-btn @click="postText" class="btn-primary">Post</v-btn>
+
+    <div class="row">
+      <div class="col-md-6">
+        <v-textarea v-model="inputText" label="Share your thoughts" placeholder="What's on your mind?"></v-textarea>
+      </div>
+      <div class="col-md-6 text-right">
+        <v-btn @click="postText" class="btn-primary mt-3">Post</v-btn>
+      </div>
+    </div>
 
     <div v-if="postedText.length > 0" class="mt-4">
       <v-card v-for="(post, index) in postedText.slice().reverse()" :key="index" class="mb-4 post-card">
