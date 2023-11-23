@@ -1,5 +1,5 @@
 <template>
-  
+
     <div>
     <h1 class="mb-4 text-primary">My Awesome Posts</h1>
 
@@ -27,13 +27,13 @@
       <v-icon @click="toggleEditForm(post)" class="action-icon edit-icon">mdi-pencil</v-icon>
       <v-icon @click="incrementHeartCount(post)" class="action-icon heart-icon" :style="{ backgroundColor: '#e74c3c' }">mdi-heart</v-icon>
       <span class="heart-count">{{ post.heartCount }}</span>
-      <v-icon @click="deletePost(index)" class="action-icon delete-icon">mdi-delete</v-icon>
+      <v-icon @click="confirmDelete(post)" class="action-icon delete-icon">mdi-delete</v-icon>
     </div>
         <!-- Edit form for post -->
         <div v-show="post.showEditForm" class="edit-form">
-          <v-textarea v-model="post.editedText" label="Edit Post" placeholder="Edit your post"></v-textarea>
-          <v-btn @click="updatePost(post)" class="btn-primary">Update</v-btn>
-        </div>
+    <v-textarea v-model="post.editedText" label="Edit Post" placeholder="Edit your post"></v-textarea>
+    <v-btn @click="confirmEdit(post)" class="btn-primary">Update</v-btn>
+  </div>
 
         <!-- Reply form -->
         <div v-show="post.showReplyForm" class="reply-form">
@@ -53,7 +53,10 @@
       <v-icon @click="incrementHeartCount(comment)" class="action-icon heart-icon" :style="{ backgroundColor: '#e74c3c' }">mdi-heart</v-icon>
       <span class="heart-count">{{ comment.heartCount }}</span>
       <v-icon @click="toggleEditForm(comment)" class="action-icon edit-icon" :style="{ color: '#2ecc71' }">mdi-pencil</v-icon>
-      <v-icon @click="deleteComment(post, commentIndex)" class="action-icon delete-icon">mdi-delete</v-icon>
+      <div v-show="post.showEditForm" class="edit-form">
+    <v-textarea v-model="post.editedText" label="Edit Post" placeholder="Edit your post"></v-textarea>
+    <v-btn @click="confirmEdit(post)" class="btn-primary">Update</v-btn>
+  </div>
     </div>
     <!-- Edit form for comment -->
     <div v-show="comment.showEditForm" class="edit-form">
@@ -130,6 +133,19 @@ export default defineComponent({
       const comment = post.comments[commentIndex];
       comment.message = comment.editedText;
       comment.showEditForm = false;
+    },
+    confirmEdit(post) {
+      const confirmed = window.confirm('Are you sure you want to edit this post?');
+      if (confirmed) {
+        this.updatePost(post);
+      }
+    },
+
+    confirmDelete(post) {
+      const confirmed = window.confirm('Are you sure you want to delete this post?');
+      if (confirmed) {
+        this.deletePost(post);
+      }
     },
     deletePost(index) {
       this.postedText.splice(index, 1);
