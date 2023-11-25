@@ -20,16 +20,17 @@
           <div class="post-timestamp">{{ formatDateTime(post.timestamp) }}</div>
         </div>
         <v-card-text class="post-message">{{ post.message }}</v-card-text>
-        <div class="post-actions">
-          <v-btn @click="toggleReplyForm(post)" class="btn-icon btn-secondary">
-            <v-icon>mdi-comment</v-icon>
-            {{ getCommentCount(post) }}
-          </v-btn>
-          <v-icon @click="toggleEditForm(post)" class="action-icon edit-icon">mdi-pencil</v-icon>
-          <v-icon @click="incrementHeartCount(post)" class="action-icon heart-icon" :style="{ backgroundColor: '#e74c3c' }">mdi-heart</v-icon>
-          <span class="heart-count">{{ post.heartCount }}</span>
-          <v-icon @click="confirmDelete(post)" class="action-icon delete-icon">mdi-delete</v-icon>
-        </div>
+        <div class="post-actions" style="display: flex; justify-content: flex-end;">
+    <v-btn @click="toggleReplyForm(post)" class="btn-icon btn-secondary">
+        <v-icon>mdi-comment</v-icon>
+        {{ getCommentCount(post) }}
+    </v-btn>
+    <v-icon @click="toggleEditForm(post)" class="action-icon edit-icon">mdi-pencil</v-icon>
+    <v-icon @click="incrementHeartCount(post)" class="action-icon heart-icon" :style="{ backgroundColor: '#e74c3c' }">mdi-heart</v-icon>
+    <span class="heart-count">{{ post.heartCount }}</span>
+    <v-icon @click="confirmDelete(post)" class="action-icon delete-icon">mdi-delete</v-icon>
+</div>
+
         <!-- Edit form for post -->
         <div v-show="post.showEditForm" class="edit-form">
           <v-textarea v-model="post.editedText" label="Edit Post" placeholder="Edit your post"></v-textarea>
