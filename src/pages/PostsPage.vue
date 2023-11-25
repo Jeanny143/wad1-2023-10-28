@@ -130,10 +130,14 @@ export default defineComponent({
       post.showEditForm = false;
     },
     updateComment(post, commentIndex) {
-      const comment = post.comments[commentIndex];
-      comment.message = comment.editedText;
-      comment.showEditForm = false;
-    },
+  const comment = post.comments[commentIndex];
+  const confirmed = window.confirm('Are you sure you want to edit this comment?');
+  if (confirmed) {
+    comment.message = comment.editedText;
+    comment.showEditForm = false;
+  }
+},
+
     confirmEdit(post) {
       const confirmed = window.confirm('Are you sure you want to edit this post?');
       if (confirmed) {
