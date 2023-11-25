@@ -40,7 +40,10 @@
         <!-- Reply form -->
         <div v-show="post.showReplyForm" class="reply-form">
           <v-textarea v-model="post.replyText" label="Reply" placeholder="Reply to this post"></v-textarea>
-          <v-btn @click="postReply(post)" class="btn-primary">Reply</v-btn>
+          <div style="display: flex; justify-content: flex-end;">
+    <v-btn @click="postReply(post)" class="btn-primary">Reply</v-btn>
+</div>
+
         </div>
 
         <!-- Display replies -->
