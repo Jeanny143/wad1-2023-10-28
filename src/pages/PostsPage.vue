@@ -52,12 +52,13 @@
             <div class="comment-timestamp">{{ formatDateTime(comment.timestamp) }}</div>
           </div>
           <v-card-text>{{ comment.message }}</v-card-text>
-          <div class="comment-actions">
-            <v-icon @click="incrementHeartCount(comment)" class="action-icon heart-icon" :style="{ backgroundColor: '#e74c3c' }">mdi-heart</v-icon>
-            <span class="heart-count">{{ comment.heartCount }}</span>
-            <v-icon @click="toggleEditForm(comment)" class="action-icon edit-icon" :style="{ color: '#2ecc71' }">mdi-pencil</v-icon>
-            <v-icon @click="confirmDelete({ post, commentIndex }, true)" class="action-icon delete-icon">mdi-delete</v-icon>
-          </div>
+          <div class="comment-actions" style="display: flex; justify-content: flex-end;">
+    <v-icon @click="incrementHeartCount(comment)" class="action-icon heart-icon" :style="{ backgroundColor: '#e74c3c' }">mdi-heart</v-icon>
+    <span class="heart-count">{{ comment.heartCount }}</span>
+    <v-icon @click="toggleEditForm(comment)" class="action-icon edit-icon" :style="{ color: '#2ecc71' }">mdi-pencil</v-icon>
+    <v-icon @click="confirmDelete({ post, commentIndex }, true)" class="action-icon delete-icon">mdi-delete</v-icon>
+</div>
+
           <!-- Edit form for comment -->
           <div v-show="comment.showEditForm" class="edit-form">
             <v-textarea v-model="comment.editedText" label="Edit Comment" placeholder="Edit your comment"></v-textarea>
