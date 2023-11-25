@@ -29,7 +29,7 @@
     <v-icon @click="incrementHeartCount(post)" class="action-icon heart-icon" :style="{ backgroundColor: '#e74c3c' }">mdi-heart</v-icon>
     <span class="heart-count">{{ post.heartCount }}</span>
     <v-icon @click="confirmDelete(post)" class="action-icon delete-icon">mdi-delete</v-icon>
-</div>
+     </div>
 
         <!-- Edit form for post -->
         <div v-show="post.showEditForm" class="edit-form">
@@ -41,8 +41,8 @@
         <div v-show="post.showReplyForm" class="reply-form">
           <v-textarea v-model="post.replyText" label="Reply" placeholder="Reply to this post"></v-textarea>
           <div style="display: flex; justify-content: flex-end;">
-    <v-btn @click="postReply(post)" class="btn-primary">Reply</v-btn>
-</div>
+       <v-btn @click="postReply(post)" class="btn-primary">Reply</v-btn>
+       </div>
 
         </div>
 
@@ -53,18 +53,18 @@
             <div>
               <v-icon>mdi-account-circle</v-icon> {{ comment.author }}
             </div>
-            <div class="comment-timestamp">{{ formatDateTime(comment.timestamp) }}</div>
-          </div>
-          <v-card-text>{{ comment.message }}</v-card-text>
-          <div class="comment-actions" style="display: flex; justify-content: flex-end;">
-    <v-icon @click="incrementHeartCount(comment)" class="action-icon heart-icon" :style="{ backgroundColor: '#e74c3c' }">mdi-heart</v-icon>
-    <span class="heart-count">{{ comment.heartCount }}</span>
-    <v-icon @click="toggleEditForm(comment)" class="action-icon edit-icon" :style="{ color: '#2ecc71' }">mdi-pencil</v-icon>
-    <v-icon @click="confirmDelete({ post, commentIndex }, true)" class="action-icon delete-icon">mdi-delete</v-icon>
-</div>
+              <div class="comment-timestamp">{{ formatDateTime(comment.timestamp) }}</div>
+            </div>
+             <v-card-text>{{ comment.message }}</v-card-text>
+            <div class="comment-actions" style="display: flex; justify-content: flex-end;">
+            <v-icon @click="incrementHeartCount(comment)" class="action-icon heart-icon" :style="{ backgroundColor: '#e74c3c' }">mdi-heart</v-icon>
+            <span class="heart-count">{{ comment.heartCount }}</span>
+            <v-icon @click="toggleEditForm(comment)" class="action-icon edit-icon" :style="{ color: '#2ecc71' }">mdi-pencil</v-icon>
+            <v-icon @click="confirmDelete({ post, commentIndex }, true)" class="action-icon delete-icon">mdi-delete</v-icon>
+            </div>
 
-          <!-- Edit form for comment -->
-          <div v-show="comment.showEditForm" class="edit-form">
+           <!-- Edit form for comment -->
+           <div v-show="comment.showEditForm" class="edit-form">
             <v-textarea v-model="comment.editedText" label="Edit Comment" placeholder="Edit your comment"></v-textarea>
             <v-btn @click="updateComment(post, commentIndex)" class="btn-primary">Update</v-btn>
           </div>
