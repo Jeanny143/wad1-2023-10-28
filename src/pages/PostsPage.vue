@@ -47,10 +47,9 @@
             <v-icon>mdi-comment</v-icon>
             {{ getCommentCount(post) }}
           </v-btn>
-          <v-icon @click="toggleEditForm(post)" class="action-icon edit-icon">mdi-pencil</v-icon>
+         
           <v-icon @click="incrementHeartCount(post)" class="action-icon heart-icon" :style="{ backgroundColor: '#e74c3c' }">mdi-heart</v-icon>
           <span class="heart-count">{{ post.heartCount }}</span>
-          <v-icon @click="confirmDelete(post)" class="action-icon delete-icon">mdi-delete</v-icon>
         </div>
 
         <!-- Edit form for post -->
@@ -80,8 +79,7 @@
           <div class="comment-actions" style="display: flex; justify-content: flex-end;">
             <v-icon @click="incrementHeartCount(comment)" class="action-icon heart-icon" :style="{ backgroundColor: '#e74c3c' }">mdi-heart</v-icon>
             <span class="heart-count">{{ comment.heartCount }}</span>
-            <v-icon @click="toggleEditForm(comment)" class="action-icon edit-icon" :style="{ color: '#2ecc71' }">mdi-pencil</v-icon>
-            <v-icon @click="confirmDelete({ post, commentIndex }, true)" class="action-icon delete-icon">mdi-delete</v-icon>
+           
           </div>
 
           <!-- Edit form for comment -->
