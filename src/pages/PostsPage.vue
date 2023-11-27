@@ -13,7 +13,6 @@
 
     <div v-if="postedText.length > 0" class="mt-4">
       <v-card v-for="(post, index) in postedText.slice().reverse()" :key="index" class="mb-4 post-card">
-        <!-- Post header -->
         <div class="post-header">
           <div>
             <v-icon>mdi-account-circle</v-icon> Jean Ayen
@@ -24,7 +23,7 @@
             <v-icon>mdi-dots-vertical</v-icon>
           </v-btn>
           <!-- Additional Actions Menu -->
-          <v-menu v-if="post.showAdditionalActionsMenu" :ref="'postMenu' + index" offset-y>
+          <v-menu v-model="post.showAdditionalActionsMenu" offset-y>
             <v-list>
               <v-list-item @click="sharePost(post)">
                 <v-btn class="me-2 text-none" color="#4f545c" prepend-icon="mdi-export-variant" variant="flat">
@@ -32,9 +31,7 @@
                 </v-btn>
               </v-list-item>
               <v-list-item @click="toggleEditForm(post)">
-                <v-btn icon>
-                  <v-icon>fa:fas fa-edit</v-icon>
-                </v-btn>
+                <v-icon icon="fa:fas fa-edit"></v-icon>
               </v-list-item>
               <v-list-item @click="confirmDelete(post)">
                 <v-btn icon>
@@ -44,18 +41,16 @@
             </v-list>
           </v-menu>
         </div>
-
-        <!-- Post content -->
         <v-card-text class="post-message">{{ post.message }}</v-card-text>
-
-        <!-- Post actions -->
         <div class="post-actions" style="display: flex; justify-content: flex-end;">
           <v-btn @click="toggleReplyForm(post)" class="btn-icon btn-secondary">
             <v-icon>mdi-comment</v-icon>
             {{ getCommentCount(post) }}
           </v-btn>
+          <v-icon @click="toggleEditForm(post)" class="action-icon edit-icon">mdi-pencil</v-icon>
           <v-icon @click="incrementHeartCount(post)" class="action-icon heart-icon" :style="{ backgroundColor: '#e74c3c' }">mdi-heart</v-icon>
           <span class="heart-count">{{ post.heartCount }}</span>
+          <v-icon @click="confirmDelete(post)" class="action-icon delete-icon">mdi-delete</v-icon>
         </div>
 
         <!-- Edit form for post -->
@@ -75,45 +70,18 @@
         <!-- Display replies -->
         <v-divider class="mt-2"></v-divider>
         <div v-for="(comment, commentIndex) in post.comments" :key="commentIndex" class="mb-3 comment">
-          <!-- Comment header -->
           <div class="comment-header">
             <div>
               <v-icon>mdi-account-circle</v-icon> {{ comment.author }}
             </div>
             <div class="comment-timestamp">{{ formatDateTime(comment.timestamp) }}</div>
-            <!-- Additional Actions Button -->
-            <v-btn icon @click="showAdditionalActions(comment)" class="action-icon additional-actions">
-              <v-icon>mdi-dots-vertical</v-icon>
-            </v-btn>
-            <!-- Additional Actions Menu -->
-            <v-menu v-if="comment.showAdditionalActionsMenu" :ref="'commentMenu' + commentIndex" offset-y>
-              <v-list>
-                <v-list-item @click="sharePost(comment)">
-                  <v-btn class="me-2 text-none" color="#4f545c" prepend-icon="mdi-export-variant" variant="flat">
-                    Share
-                  </v-btn>
-                </v-list-item>
-                <v-list-item @click="toggleEditForm(comment)">
-                  <v-btn icon>
-                    <v-icon>fa:fas fa-edit</v-icon>
-                  </v-btn>
-                </v-list-item>
-                <v-list-item @click="confirmDelete({ post, commentIndex }, true)">
-                  <v-btn icon>
-                    <v-icon>mdi-delete-outline</v-icon>
-                  </v-btn>
-                </v-list-item>
-              </v-list>
-            </v-menu>
           </div>
-
-          <!-- Comment content -->
           <v-card-text>{{ comment.message }}</v-card-text>
-
-          <!-- Comment actions -->
           <div class="comment-actions" style="display: flex; justify-content: flex-end;">
             <v-icon @click="incrementHeartCount(comment)" class="action-icon heart-icon" :style="{ backgroundColor: '#e74c3c' }">mdi-heart</v-icon>
             <span class="heart-count">{{ comment.heartCount }}</span>
+            <v-icon @click="toggleEditForm(comment)" class="action-icon edit-icon" :style="{ color: '#2ecc71' }">mdi-pencil</v-icon>
+            <v-icon @click="confirmDelete({ post, commentIndex }, true)" class="action-icon delete-icon">mdi-delete</v-icon>
           </div>
 
           <!-- Edit form for comment -->
@@ -150,6 +118,7 @@ export default defineComponent({
         replyText: '',
         showEditForm: false,
         editedText: this.inputText,
+        showAdditionalActionsMenu: false,
       });
       this.inputText = '';
     },
@@ -231,11 +200,11 @@ export default defineComponent({
     getCommentCount(post) {
       return post.comments.length;
     },
-    showAdditionalActions(item) {
-      item.showAdditionalActionsMenu = !item.showAdditionalActionsMenu;
+    showAdditionalActions(post) {
+      post.showAdditionalActionsMenu = !post.showAdditionalActionsMenu;
     },
     sharePost(post) {
-      // Implement your share logic here
+      // Add your logic for sharing a post
       console.log('Sharing post:', post);
     },
   },
@@ -294,10 +263,6 @@ export default defineComponent({
 .action-icon {
   margin-right: 8px;
   cursor: pointer;
-}
-
-.additional-actions {
-  color: #555; /* Color for the additional actions button */
 }
 
 .action-btn {
