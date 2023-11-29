@@ -1,3 +1,6 @@
+
+
+User
 <template>
   <div>
     <h1 class="mb-4 text-primary">My Awesome Posts</h1>
@@ -18,39 +21,18 @@
             <v-icon>mdi-account-circle</v-icon> Jean Ayen
           </div>
           <div class="post-timestamp">{{ formatDateTime(post.timestamp) }}</div>
-          <!-- Additional Actions Button -->
-          <v-btn icon @click="showAdditionalActions(post)" class="action-icon additional-actions">
-            <v-icon>mdi-dots-vertical</v-icon>
-          </v-btn>
-          <!-- Additional Actions Menu -->
-          <v-menu v-model="post.showAdditionalActionsMenu" offset-y>
-            <v-list>
-              <v-list-item @click="sharePost(post)">
-                <v-btn class="me-2 text-none" color="#4f545c" prepend-icon="mdi-export-variant" variant="flat">
-                  Share
-                </v-btn>
-              </v-list-item>
-              <v-list-item @click="toggleEditForm(post)">
-                <v-icon icon="fa:fas fa-edit"></v-icon>
-              </v-list-item>
-              <v-list-item @click="confirmDelete(post)">
-                <v-btn icon>
-                  <v-icon>mdi-delete-outline</v-icon>
-                </v-btn>
-              </v-list-item>
-            </v-list>
-          </v-menu>
         </div>
         <v-card-text class="post-message">{{ post.message }}</v-card-text>
         <div class="post-actions" style="display: flex; justify-content: flex-end;">
-          <v-btn @click="toggleReplyForm(post)" class="btn-icon btn-secondary">
-            <v-icon>mdi-comment</v-icon>
-            {{ getCommentCount(post) }}
-          </v-btn>
-         
-          <v-icon @click="incrementHeartCount(post)" class="action-icon heart-icon" :style="{ backgroundColor: '#e74c3c' }">mdi-heart</v-icon>
-          <span class="heart-count">{{ post.heartCount }}</span>
-        </div>
+    <v-btn @click="toggleReplyForm(post)" class="btn-icon btn-secondary">
+        <v-icon>mdi-comment</v-icon>
+        {{ getCommentCount(post) }}
+    </v-btn>
+    <v-icon @click="toggleEditForm(post)" class="action-icon edit-icon">mdi-pencil</v-icon>
+    <v-icon @click="incrementHeartCount(post)" class="action-icon heart-icon" :style="{ backgroundColor: '#e74c3c' }">mdi-heart</v-icon>
+    <span class="heart-count">{{ post.heartCount }}</span>
+    <v-icon @click="confirmDelete(post)" class="action-icon delete-icon">mdi-delete</v-icon>
+     </div>
 
         <!-- Edit form for post -->
         <div v-show="post.showEditForm" class="edit-form">
@@ -62,8 +44,9 @@
         <div v-show="post.showReplyForm" class="reply-form">
           <v-textarea v-model="post.replyText" label="Reply" placeholder="Reply to this post"></v-textarea>
           <div style="display: flex; justify-content: flex-end;">
-            <v-btn @click="postReply(post)" class="btn-primary">Reply</v-btn>
-          </div>
+       <v-btn @click="postReply(post)" class="btn-primary">Reply</v-btn>
+       </div>
+
         </div>
 
         <!-- Display replies -->
@@ -73,17 +56,18 @@
             <div>
               <v-icon>mdi-account-circle</v-icon> {{ comment.author }}
             </div>
-            <div class="comment-timestamp">{{ formatDateTime(comment.timestamp) }}</div>
-          </div>
-          <v-card-text>{{ comment.message }}</v-card-text>
-          <div class="comment-actions" style="display: flex; justify-content: flex-end;">
+              <div class="comment-timestamp">{{ formatDateTime(comment.timestamp) }}</div>
+            </div>
+             <v-card-text>{{ comment.message }}</v-card-text>
+            <div class="comment-actions" style="display: flex; justify-content: flex-end;">
             <v-icon @click="incrementHeartCount(comment)" class="action-icon heart-icon" :style="{ backgroundColor: '#e74c3c' }">mdi-heart</v-icon>
             <span class="heart-count">{{ comment.heartCount }}</span>
-           
-          </div>
+            <v-icon @click="toggleEditForm(comment)" class="action-icon edit-icon" :style="{ color: '#2ecc71' }">mdi-pencil</v-icon>
+            <v-icon @click="confirmDelete({ post, commentIndex }, true)" class="action-icon delete-icon">mdi-delete</v-icon>
+            </div>
 
-          <!-- Edit form for comment -->
-          <div v-show="comment.showEditForm" class="edit-form">
+           <!-- Edit form for comment -->
+           <div v-show="comment.showEditForm" class="edit-form">
             <v-textarea v-model="comment.editedText" label="Edit Comment" placeholder="Edit your comment"></v-textarea>
             <v-btn @click="updateComment(post, commentIndex)" class="btn-primary">Update</v-btn>
           </div>
@@ -116,7 +100,6 @@ export default defineComponent({
         replyText: '',
         showEditForm: false,
         editedText: this.inputText,
-        showAdditionalActionsMenu: false,
       });
       this.inputText = '';
     },
@@ -155,13 +138,14 @@ export default defineComponent({
       post.showEditForm = false;
     },
     updateComment(post, commentIndex) {
-      const comment = post.comments[commentIndex];
-      const confirmed = window.confirm('Are you sure you want to edit this comment?');
-      if (confirmed) {
-        comment.message = comment.editedText;
-        comment.showEditForm = false;
-      }
-    },
+  const comment = post.comments[commentIndex];
+  const confirmed = window.confirm('Are you sure you want to edit this comment?');
+  if (confirmed) {
+    comment.message = comment.editedText;
+    comment.showEditForm = false;
+  }
+},
+
     confirmEdit(post) {
       const confirmed = window.confirm('Are you sure you want to edit this post?');
       if (confirmed) {
@@ -197,13 +181,6 @@ export default defineComponent({
     },
     getCommentCount(post) {
       return post.comments.length;
-    },
-    showAdditionalActions(post) {
-      post.showAdditionalActionsMenu = !post.showAdditionalActionsMenu;
-    },
-    sharePost(post) {
-      // Add your logic for sharing a post
-      console.log('Sharing post:', post);
     },
   },
 });
